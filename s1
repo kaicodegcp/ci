@@ -314,3 +314,30 @@ Finally, run the job:
   --credentials-file /root/.cde/credentials \
   --tls-insecure
 
+
+000000000
+
+On your CLI node (bdmwr112x04t2), create a file:
+
+mkdir -p ~/.cdp
+vi ~/.cdp/credentials
+
+
+Add:
+
+[default]
+cdp_access_key_id = <your-access-key-id>
+cdp_private_key = <your-private-key>
+
+
+5️⃣ Then in your CDE command, specify:
+
+./cde resource create \
+  --name spark-examples \
+  --type files \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+You’ll no longer be prompted for “API User Password” — the CLI will automatically authenticate using the keypair.
