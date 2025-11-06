@@ -1,0 +1,73 @@
+Fix Using Cloudera’s Recommended Steps (from the PDF)
+1️⃣ Create the .cde directory if not present
+mkdir -p ~/.cde
+
+2️⃣ Create or overwrite this file: ~/.cde/config.yaml
+
+Paste exactly the following (adjusted for your environment):
+
+# ~/.cde/config.yaml
+
+allow-all-spark-submit-flags: true
+credentials-file: /root/.cdp/credentials
+cdp-endpoint: https://console-ds-17oct.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+tls-insecure: true
+
+profiles:
+  - name: vc-k4sg67rt
+    vcluster-endpoint: https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1
+
+
+✅ This tells the CDE CLI to use:
+
+your CDP Console (cdp-endpoint) as control plane,
+
+your Virtual Cluster endpoint as the execution endpoint,
+
+and credentials from /root/.cdp/credentials.
+
+3️⃣ Verify form factor
+export CDE_FORM_FACTOR=private
+
+4️⃣ Clean any token cache
+rm -rf ~/.cache/cloudera/cde/token-cache
+
+5️⃣ Verify your configuration
+cat ~/.cde/config.yaml
+cat ~/.cdp/credentials
+
+
+Both must show valid endpoints and access keys.
+
+6️⃣ Create resource
+
+Now run:
+
+./cde --profile vc-k4sg67rt resource create \
+  --name spark-examples \
+  --type files
+
+✅ Expected Output
+
+You should now see:
+
+INFO  Current form-factor is private
+INFO  Using credentials file: /root/.cdp/credentials
+INFO  Using Cluster ID: cluster-k4sg67rt
+INFO  Requesting POST https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/resources
+INFO  Created resource spark-examples (type: files)
+
+7️⃣ (Optional) Upload your jar and run Spark job
+./cde --profile vc-k4sg67rt resource upload \
+  --name spark-examples \
+  --local-path spark-examples_2.11-2.4.8.7.1.9.1045-5.jar
+
+./cde --profile vc-k4sg67rt job create \
+  --name spark-pi \
+  --type spark \
+  --mount-1-resource spark-examples \
+  --jar spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --class org.apache.spark.examples.SparkPi \
+  --arg 10
+
+./cde --profile vc-k4sg67rt job run --name spark-pi --wait
