@@ -341,3 +341,97 @@ cdp_private_key = <your-private-key>
 
 
 You’ll no longer be prompted for “API User Password” — the CLI will automatically authenticate using the keypair.
+
+
+
+99999999999
+
+Create or update your CDE config file
+
+Edit:
+
+vi ~/.cde/config.yaml
+
+
+Replace everything with this:
+
+allow-all-spark-submit-flags: true
+credentials-file: /root/.cdp/credentials
+tls-insecure: true
+
+profiles:
+  - name: vc-k4sg67rt
+    vcluster-endpoint: https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1
+
+
+Save and exit (:wq).
+
+3️⃣ Test profile connection using this profile directly
+./cde resource create \
+  --profile vc-k4sg67rt \
+  --name spark-examples \
+  --type files \
+  --tls-insecure
+
+
+✅ Expected behavior:
+
+No prompt for “API User Password.”
+
+No attempt to reach cdp.cloudera.com.
+
+If successful, it should create the spark-examples resource inside your virtual cluster.
+
+4️⃣ If you still get “invalid credentials”
+
+Run:
+
+echo $CDP_ACCESS_KEY_ID
+echo $CDP_PRIVATE_KEY
+
+
+If they’re empty, export them:
+
+export CDP_ACCESS_KEY_ID=98a02947-7cd0-494f-a0f0-969309da9020
+export CDP_PRIVATE_KEY='N4nk9VzYfBb9CVdCzCCm7Wmduy65Wso+mgIGZ/vJ6xg='
+
+
+Then retry:
+
+./cde resource create \
+  --profile vc-k4sg67rt \
+  --name spark-examples \
+  --type files \
+  --tls-insecure
+
+5️⃣ If successful
+
+Continue:
+
+./cde resource upload --profile vc-k4sg67rt \
+  --name spark-examples \
+  --local-path spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --tls-insecure
+
+
+Then:
+
+./cde job create --profile vc-k4sg67rt \
+  --name spark-pi-test \
+  --type spark \
+  --mount-1-resource spark-examples \
+  --jar spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --class org.apache.spark.examples.SparkPi \
+  --arg 10 \
+  --driver-cores 1 \
+  --driver-memory 1g \
+  --executor-cores 1 \
+  --executor-memory 1g \
+  --num-executors 2 \
+  --tls-insecure
+
+
+And run:
+
+./cde job run --profile vc-k4sg67rt --name spark-pi-test --wait --tls-insecure
+
