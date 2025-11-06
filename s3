@@ -1,0 +1,17 @@
+export CDE_FORM_FACTOR=private
+export CDE_VC_ENDPOINT=https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1
+rm -rf ~/.cache/cloudera/cde/token-cache
+
+./cde resource create \
+  --name spark-examples \
+  --type files \
+  --vcluster-endpoint ${CDE_VC_ENDPOINT} \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --verbose
+
+echo ${CDE_VC_ENDPOINT}
+curl -vk ${CDE_VC_ENDPOINT}
+
+./cde version
+strings ./cde | grep -i form-factor -A2
