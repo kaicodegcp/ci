@@ -88,3 +88,44 @@ You can also stream logs while a job is running:
   --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
   --credentials-file /root/.cdp/credentials \
   --tls-insecure
+
+
+This works on all CDE CLI versions:
+
+./cde job run list \
+  --name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+✅ Expected output (sample):
+
+ID   STATUS      STARTED                  ENDED
+42   SUCCEEDED   2025-11-06T18:10:12Z     2025-11-06T18:12:30Z
+41   FAILED      2025-11-06T17:55:00Z     2025-11-06T17:56:10Z
+
+
+Note the numeric run ID (e.g., 42).
+
+🧾 Step 2 – Describe or view logs for that run
+Option A – Describe the run
+./cde job run describe spark-pi 42 \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+Option B – Fetch driver logs
+./cde job run logs spark-pi 42 \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+⚠️ Notice that here the run ID (42) follows the job name without --run-id — that’s why your earlier command errored out.
+
+🔍 Step 3 – Look for this line in output
+
+You should see something like:
+
+INFO SparkPi: Pi is roughly 3.141592653589793
