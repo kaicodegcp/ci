@@ -1,0 +1,55 @@
+Next Step — Upload Spark Example JAR
+
+Now that the resource exists, upload your JAR file to it.
+
+./cde resource upload \
+  --name spark-examples \
+  --local-path spark-examples_2.11-2.4.8.7.1.9.1045-5.jar
+
+
+Expected:
+
+INFO Uploading file spark-examples_2.11-2.4.8.7.1.9.1045-5.jar
+INFO Successfully uploaded resource spark-examples
+
+🟢 Then Create and Run a Spark Job
+./cde job create \
+  --name spark-pi \
+  --type spark \
+  --mount-1-resource spark-examples \
+  --jar spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --class org.apache.spark.examples.SparkPi \
+  --arg 10
+
+
+Expected:
+
+INFO Created job spark-pi
+
+
+Then run it:
+
+./cde job run --name spark-pi --wait
+
+
+Expected:
+
+INFO Job spark-pi started
+INFO Job spark-pi completed successfully
+
+✅ (Optional Validation)
+
+To list all resources:
+
+./cde resource list
+
+
+To list jobs:
+
+./cde job list
+
+🧭 Summary
+
+✔️ You’ve now successfully authenticated and connected the CDE CLI to your private CDP cluster.
+✔️ Next actions: upload → create job → run job.
+After that, you can view job logs and metrics in the CDE UI under Jobs → Job Runs.
