@@ -126,6 +126,43 @@ Option B – Fetch driver logs
 
 🔍 Step 3 – Look for this line in output
 
+
+
+
+Step 1 — See all jobs
+./cde job list \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+That will confirm the job name (e.g., spark-pi) and ID.
+
+🧾 Step 2 — See all runs for that job
+./cde run list \
+  --job-name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+That should print something like:
+
+ID   STATUS      STARTED                  ENDED
+42   SUCCEEDED   2025-11-06T18:10:12Z     2025-11-06T18:12:30Z
+
+🪵 Step 3 — View logs for that specific run
+./cde run logs 42 \
+  --job-name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+You should now see the Spark driver output — look for:
+
+Pi is roughly 3.141592653589793
+
 You should see something like:
 
 INFO SparkPi: Pi is roughly 3.141592653589793
