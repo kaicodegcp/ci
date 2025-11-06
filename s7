@@ -1,0 +1,36 @@
+Next Steps — Create and Run the Spark Job
+
+Now that the resource exists, you can define a Spark job and run it.
+
+1️⃣ Create the Spark Job
+
+Run the following:
+
+./cde job create \
+  --name spark-pi \
+  --type spark \
+  --mount-1-resource spark-examples \
+  --application-file spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --class org.apache.spark.examples.SparkPi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+Expected:
+
+INFO Created job spark-pi
+
+2️⃣ Run the Job
+./cde job run \
+  --name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --wait
+
+
+Expected:
+
+INFO Job spark-pi started
+INFO Job spark-pi completed successfully
