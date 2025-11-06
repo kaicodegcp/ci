@@ -260,3 +260,57 @@ curl -vk --cert /root/certs-11-03-2025/cde-k4sg67rt.pem \
           --key  /root/certs-11-03-2025/cde-k4sg67rt.key \
   https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs
 
+
+
+_____________________
+
+Next Step: Test CLI job creation (with direct flags)
+
+Run this from /root/cde-11-06/cde-env-tool:
+
+./cde resource create \
+  --name spark-examples \
+  --type files \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cde/credentials \
+  --tls-insecure
+
+
+Then upload:
+
+./cde resource upload \
+  --name spark-examples \
+  --local-path spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cde/credentials \
+  --tls-insecure
+
+
+Then create the Spark job:
+
+./cde job create \
+  --name spark-pi-test \
+  --type spark \
+  --mount-1-resource spark-examples \
+  --jar spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --class org.apache.spark.examples.SparkPi \
+  --arg 10 \
+  --driver-cores 1 \
+  --driver-memory 1g \
+  --executor-cores 1 \
+  --executor-memory 1g \
+  --num-executors 2 \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cde/credentials \
+  --tls-insecure
+
+
+Finally, run the job:
+
+./cde job run \
+  --name spark-pi-test \
+  --wait \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cde/credentials \
+  --tls-insecure
+
