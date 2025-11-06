@@ -57,3 +57,50 @@ Pi is roughly 3.141592653589793
 That confirms the SparkPi sample ran successfully on your virtual cluster.
 
 🧠 Summary
+
+
+
+Describe job (use --name)
+./cde job describe \
+  --name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+This will show the full definition including file, className, memory, cores, etc.
+
+2️⃣ Run job again & show logs
+
+This CLI doesn’t have a separate “logs” or “runs” subcommand, so use the single run command with --show-logs:
+
+./cde job run \
+  --name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --wait \
+  --show-logs
+
+
+This will:
+
+Submit the job
+
+Wait until it completes
+
+Stream the full Spark driver logs directly to your terminal
+
+At the end, you should see:
+
+Job run XX succeeded
+Pi is roughly 3.141592653589793
+
+3️⃣ (Optional) Re-list all jobs
+
+If you just want to see available jobs again:
+
+./cde job list \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
