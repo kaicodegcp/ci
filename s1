@@ -252,3 +252,11 @@ If that works, everything from Step 3 onward (resource upload, job create, job r
 
 ./cde job create --profile vc-k4sg67rt ...
 ./cde job run --profile vc-k4sg67rt ...
+
+
+=======
+
+curl -vk --cert /root/certs-11-03-2025/cde-k4sg67rt.pem \
+          --key  /root/certs-11-03-2025/cde-k4sg67rt.key \
+  https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs
+
