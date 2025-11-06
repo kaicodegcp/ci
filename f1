@@ -25,3 +25,6 @@ rm -f "$tmp1" "$tmp2"
 
 echo "✅ Delta written to: $output"
 echo "Count of new values: $(wc -l < "$output")"
+
+
+=IF(COUNTIF($A:$A, B2)=0, B2, "")
