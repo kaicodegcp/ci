@@ -6,6 +6,15 @@ Now that the resource exists, you can define a Spark job and run it.
 
 Run the following:
 
+./cde resource create \
+  --name spark-examples \
+  --type files \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --verbose
+
+
 ./cde job create \
   --name spark-pi \
   --type spark \
@@ -34,3 +43,48 @@ Expected:
 
 INFO Job spark-pi started
 INFO Job spark-pi completed successfully
+
+
+To see all runs and their statuses:
+
+./cde job runs list \
+  --name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+This will output something like:
+
+ID   STATUS      STARTED                  ENDED
+42   SUCCEEDED   2025-11-06T18:10:12Z     2025-11-06T18:12:30Z
+
+🧾 2️⃣ View Logs (and Spark Output)
+
+To see the full driver and executor logs for your successful job run:
+
+./cde job run describe \
+  --name spark-pi \
+  --run-id 42 \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+Look for a line similar to this in the output:
+
+Pi is roughly 3.141592653589793
+
+
+—that’s the SparkPi sample result.
+
+🧰 3️⃣ (Optional) Stream Logs Live
+
+You can also stream logs while a job is running:
+
+./cde job run logs \
+  --name spark-pi \
+  --run-id 42 \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
