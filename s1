@@ -1,0 +1,113 @@
+Step-by-step to submit Spark job using your cde binary and TLS certs
+1. Verify cde binary
+
+From your extracted path (/root/cde-11-06/cde-env-tool):
+
+cd /root/cde-11-06/cde-env-tool
+./cde version
+
+
+If it prints a version (e.g., 1.22.2 or similar), you’re good.
+
+If you get “permission denied,” fix it:
+
+chmod 755 ./cde
+
+2. Prepare CDE credentials
+
+Create directory:
+
+mkdir -p ~/.cde
+
+
+Now create a file:
+
+vi ~/.cde/credentials
+
+
+Add your certs (replace paths with actual):
+
+client-cert: /root/certs-11-03-2025/cde-k4sg67rt.pem
+client-key:  /root/certs-11-03-2025/cde-k4sg67rt.key
+
+
+Save and close.
+
+3. Create your config file
+vi ~/.cde/config.yaml
+
+
+Example (replace <vc-endpoint> with your CDE Virtual Cluster Jobs API endpoint):
+
+allow-all-spark-submit-flags: true
+credentials-file: /root/.cde/credentials
+tls-insecure: true     # optional, if your internal cert isn’t trusted
+profiles:
+  - name: default
+    vcluster-endpoint: https://console-ds-17oct.apps.mlab-ctigtcdai03d.ecs.dyn.nsroot.net/dex/api/v1
+
+
+You can find your vcluster endpoint in the CDE UI → Administration → Virtual Clusters → (your cluster) → Jobs API URL.
+
+4. Test connection
+
+Run:
+
+./cde cluster describe
+
+
+If it connects successfully, your certs and endpoint are good.
+
+5. Upload a Spark example script
+
+Let’s make a quick test script:
+
+cat << 'EOF' > sparkpi.py
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("PiExample").getOrCreate()
+n = 100000
+count = spark.sparkContext.parallelize(range(1, n+1)).filter(lambda x: (x*x + (n-x)*(n-x)) < n*n).count()
+print("Approx Pi =", 4.0 * count / n)
+spark.stop()
+EOF
+
+
+Now create and upload a resource:
+
+./cde resource create --name test-scripts --type files
+./cde resource upload --name test-scripts --local-path sparkpi.py
+
+6. Create a job
+./cde job create \
+  --name spark-pi-test \
+  --type spark \
+  --mount-1-resource test-scripts \
+  --application-file sparkpi.py \
+  --driver-cores 1 \
+  --driver-memory 1g \
+  --executor-cores 1 \
+  --executor-memory 1g \
+  --num-executors 2
+
+7. Run the job
+./cde job run --name spark-pi-test --wait
+
+
+You’ll see job progress and final status (e.g., Job run completed successfully).
+
+8. View logs
+./cde run logs --name spark-pi-test
+
+
+or by run ID:
+
+./cde run describe --id <run-id>
+
+⚙️ Optional REST method (no CLI)
+
+If you ever want to hit the API directly:
+
+curl -X POST https://<vcluster-endpoint>/jobs/spark-pi-test/run \
+--cert /root/certs-11-03-2025/cde-k4sg67rt.pem \
+--key /root/certs-11-03-2025/cde-k4sg67rt.key \
+--header "Content-Type: application/json"
