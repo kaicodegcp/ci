@@ -216,3 +216,39 @@ curl -X POST \
 
 
 This returns a JSON payload with runId.
+
+
+
+=========
+
+
+Step-by-step fix
+
+1️⃣ Edit your config file
+
+vi ~/.cde/config.yaml
+
+
+Replace your current content with this:
+
+allow-all-spark-submit-flags: true
+credentials-file: /root/.cde/credentials
+tls-insecure: true   # keep if internal CA is untrusted
+profiles:
+  - name: vc-k4sg67rt
+    vcluster-endpoint: https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1
+
+
+Save and exit (:wq).
+
+2️⃣ Test again specifying your new profile
+
+cd /root/cde-11-06/cde-env-tool
+./cde cluster describe --profile vc-k4sg67rt
+
+
+You should now see cluster metadata (name, Spark version, and status).
+If that works, everything from Step 3 onward (resource upload, job create, job run) will proceed successfully using:
+
+./cde job create --profile vc-k4sg67rt ...
+./cde job run --profile vc-k4sg67rt ...
