@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Input files
+file1="file1.txt"   # Master list file (each value in new line)
+file2="file2.txt"   # New list (comma-separated)
+output="delta_output.txt"
+
+# Create temporary cleaned lists
+tmp1=$(mktemp)
+tmp2=$(mktemp)
+
+# Normalize file1 (master)
+# Remove extra spaces, ignore blanks, sort and unique
+sed 's/ //g' "$file1" | sed '/^$/d' | sort -u > "$tmp1"
+
+# Normalize file2 (comma-separated new values)
+# Split by comma, remove blanks/spaces, sort and unique
+tr ',' '\n' < "$file2" | sed 's/ //g' | sed '/^$/d' | sort -u > "$tmp2"
+
+# Find values present in file2 but not in file1
+comm -23 "$tmp2" "$tmp1" > "$output"
+
+# Clean up
+rm -f "$tmp1" "$tmp2"
+
+echo "✅ Delta written to: $output"
+echo "Count of new values: $(wc -l < "$output")"
