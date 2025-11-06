@@ -70,3 +70,65 @@ Then:
   --verbose
 
 🧠 If it still tries to resolve api.us-west-1.cdp.cloudera.com
+
+
+
+
+-----------------
+
+Step 1. Set “Private Mode” environment variable
+
+Run this exactly:
+
+export CDE_FORM_FACTOR=private
+
+
+This tells the CLI to skip all CDP public API discovery and use the endpoint you pass directly.
+
+You can confirm it took effect:
+
+echo $CDE_FORM_FACTOR
+
+
+It should print:
+
+private
+
+✅ Step 2. Clean and retry the same command
+
+Now rerun:
+
+./cde resource create \
+  --name spark-examples \
+  --type files \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --verbose
+
+✅ Step 3. Expected Output
+
+If the CDE_FORM_FACTOR=private variable is set correctly, you’ll no longer see:
+
+api.us-west-1.cdp.cloudera.com/api/v1/de/describeService
+
+
+Instead, you’ll see:
+
+POST https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/resources
+
+
+If successful:
+
+INFO Successfully created resource spark-examples (type: files)
+
+🧩 Optional — make this permanent
+
+If it works, make sure you never have to re-export it:
+
+echo 'export CDE_FORM_FACTOR=private' >> ~/.bashrc
+
+
+If it still tries to reach altus.cloudera.com, please share the output of:
+
+./cde version
