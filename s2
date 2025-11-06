@@ -1,0 +1,72 @@
+Root Cause
+
+Your current CDE CLI binary (cde-env-tool v1.22.2-b34) is configured by default to use the CDP Public Control Plane for token exchange (even if you pass --vcluster-endpoint).
+This behavior must be overridden manually for Private Cloud CDE clusters like yours.
+
+In short:
+
+The CLI is trying → https://api.us-west-1.cdp.cloudera.com
+But should talk → https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1
+
+✅ Step-by-Step Fix (for private CDE)
+1️⃣ Make sure your credentials file is clean
+cat /root/.cdp/credentials
+
+
+It should look exactly like this:
+
+[default]
+cdp_access_key_id = 98a02947-7cd0-494f-a0f0-969309da9020
+cdp_private_key = N4nk9VzYfBb9CVdCzCCm7Wmduy65Wso+mgIGZ/vJ6xg=
+
+
+No extra spaces or hidden characters at the end of the key.
+If you downloaded from the Cloudera console, copy the contents cleanly (avoid smart quotes or carriage returns).
+
+2️⃣ Create an environment variable to override region and disable Control Plane autodetect
+
+Run:
+
+export CDE_CLI_CONTROL_PLANE_BYPASS=true
+export CDE_DISABLE_CLOUD_API=true
+
+
+These two environment variables force the CLI to bypass the public CDP Control Plane and use only your --vcluster-endpoint.
+
+3️⃣ Retry with this working command
+./cde resource create \
+  --name spark-examples \
+  --type files \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --verbose
+
+
+✅ Expected:
+
+CLI should not try to hit any cdp.cloudera.com domains.
+
+Should connect directly to your CDE virtual cluster endpoint (4n9wpd5l...).
+
+Should return a JSON confirmation of resource creation or a permissions-related error (if cluster policies are still restricted).
+
+4️⃣ (If still fails) — try “offline mode” syntax
+
+Some older CDE CLI builds require the environment explicitly declared via CDP_ENV_ID and cluster ID bypass.
+Run this before retrying:
+
+export CDE_VC_ENDPOINT=https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1
+
+
+Then:
+
+./cde resource create \
+  --name spark-examples \
+  --type files \
+  --vcluster-endpoint $CDE_VC_ENDPOINT \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --verbose
+
+🧠 If it still tries to resolve api.us-west-1.cdp.cloudera.com
