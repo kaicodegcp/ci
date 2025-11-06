@@ -1,0 +1,47 @@
+Title
+
+CDE Certificate Creation and OpenShift API Whitelisting for Secure Spark Job Submissions
+
+Submitted for Week Ending
+
+11/08/2025
+
+Description
+
+Enabled Secure Communication and API Access for Cloudera Data Services (CDE) on OpenShift:
+This week, I designed and validated the end‑to‑end certificate creation and configuration process required for secure CDE environment setup and Spark job submission on OpenShift.
+The effort involved creating TLS certificates through Citi CMP, whitelisting OpenShift API endpoints, and configuring SSL for Cloudera Data Services to ensure trusted communication between internal automation tools and the OpenShift cluster.
+
+Additionally, I authored the CDE – Certs Creation User Guide in Confluence to document each stage of the process, including certificate ordering, keypair generation, ingress secret creation, and namespace validation for CDE workloads.
+
+Key Achievements
+
+Completed end‑to‑end TLS certificate generation and onboarding through Citi CMP2 for CDE API usage.
+
+Whitelisted OpenShift API endpoints and configured SSL for trusted internal communication with Cloudera Data Services.
+
+Executed cde-utils-oc.sh automation to create and validate TLS secrets and ingress configurations for multiple namespaces.
+
+Integrated Kerberos keytab authentication (sk60554) into the workflow for secure Spark job submissions.
+
+Successfully validated Spark job submission to the OpenShift cluster via secure API connection.
+
+Published a detailed CDE Certs Creation and Setup Guide on Confluence for EAP engineering reference.
+
+Benefits to the Team
+
+Establishes a reusable, secure process for onboarding Cloudera Data Services environments.
+
+Enables automated and certificate‑based job submissions without manual SSL setup.
+
+Strengthens compliance by aligning with Citi’s TLS and identity‑management policies.
+
+Reduces turnaround time for future environment activations and CDE/CDW service testing.
+
+Next Steps
+
+Automate cert renewal and secret regeneration workflows using CMP2 APIs.
+
+Integrate certificate validation checks into the CDS onboarding Ansible role.
+
+Extend the same certificate automation framework to CDW and CML services on OpenShift.
