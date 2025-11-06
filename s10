@@ -1,0 +1,59 @@
+Step 1 — List jobs (already works)
+./cde job list \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+✅ confirms your jobs: spark-pi, test-pi-nov3, etc.
+
+🧩 Step 2 — Describe the job definition
+./cde job describe spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+This shows configuration (file, className, etc.), not runtime logs.
+
+🪵 Step 3 — See the latest job run status
+
+In your CLI version, this is done through:
+
+./cde job run spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --wait
+
+
+👉 This re-runs the job and waits for completion, printing:
+
+Job run XX submitted. Waiting...
+Job run XX succeeded
+
+
+If you want to see output logs, append:
+
+--show-logs
+
+
+so it becomes:
+
+./cde job run spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --wait \
+  --show-logs
+
+✅ Output you should see
+
+At the bottom of the output, look for a line like:
+
+Pi is roughly 3.141592653589793
+
+
+That confirms the SparkPi sample ran successfully on your virtual cluster.
+
+🧠 Summary
