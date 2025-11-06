@@ -1,0 +1,44 @@
+3 Correct Ways to Run It
+Option 1 (Recommended):
+
+Use the profile implicitly — your YAML already defines it.
+Just run:
+
+./cde resource upload \
+  --name spark-examples \
+  --local-path spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+This directly tells it which endpoint to use and will succeed.
+
+Option 2 (Persistent profile setting)
+
+Export your profile as default:
+
+export CDE_PROFILE=vc-k4sg67rt
+
+
+Then just run:
+
+./cde resource upload --name spark-examples --local-path spark-examples_2.11-2.4.8.7.1.9.1045-5.jar
+
+Option 3 (Inline after subcommand)
+
+If your CLI version supports it (newer builds do), this will also work:
+
+./cde resource --profile vc-k4sg67rt upload \
+  --name spark-examples \
+  --local-path spark-examples_2.11-2.4.8.7.1.9.1045-5.jar
+
+
+…but your binary likely does not support that syntax — so prefer Option 1.
+
+🟢 Expected Output
+
+After the fix, you should see:
+
+INFO Uploading file spark-examples_2.11-2.4.8.7.1.9.1045-5.jar
+INFO Successfully uploaded resource spark-examples
