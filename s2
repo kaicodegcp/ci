@@ -129,6 +129,37 @@ If it works, make sure you never have to re-export it:
 echo 'export CDE_FORM_FACTOR=private' >> ~/.bashrc
 
 
+
+---------
+Step-by-Step Fix
+1️⃣ Explicitly define the correct endpoint variable
+
+Run this first (note the quotes and the full https://):
+
+export CDE_VC_ENDPOINT="https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1"
+
+
+Confirm it:
+
+echo $CDE_VC_ENDPOINT
+
+
+It must print the entire URL starting with https:// exactly as above.
+
+2️⃣ Clean up any cached tokens (old attempts used invalid endpoint paths)
+rm -rf ~/.cache/cloudera/cde/token-cache
+
+3️⃣ Run the command again (with correct endpoint)
+./cde resource create \
+  --name spark-examples \
+  --type files \
+  --vcluster-endpoint "$CDE_VC_ENDPOINT" \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --verbose
+
+
+
 If it still tries to reach altus.cloudera.com, please share the output of:
 
 ./cde version
