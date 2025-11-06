@@ -111,3 +111,108 @@ curl -X POST https://<vcluster-endpoint>/jobs/spark-pi-test/run \
 --cert /root/certs-11-03-2025/cde-k4sg67rt.pem \
 --key /root/certs-11-03-2025/cde-k4sg67rt.key \
 --header "Content-Type: application/json"
+
+
+==========
+
+
+✅ Step 3 — Create ~/.cde/config.yaml
+
+Run:
+
+mkdir -p ~/.cde
+vi ~/.cde/config.yaml
+
+
+Paste exactly:
+
+allow-all-spark-submit-flags: true
+credentials-file: /root/.cde/credentials
+tls-insecure: true       # keep if internal CA is untrusted
+profiles:
+  - name: default
+    vcluster-endpoint: https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1
+
+
+Save (:wq).
+
+✅ Step 4 — Test connectivity
+
+Run:
+
+cd /root/cde-11-06/cde-env-tool
+./cde cluster describe
+
+
+If connection works, you’ll see details of the cluster and Spark 3.2.3 runtime.
+If SSL errors occur, confirm tls-insecure: true is in your config and rerun.
+
+✅ Step 5 — Upload the Spark examples JAR as a resource
+
+Create the resource and upload the jar:
+
+./cde resource create --name spark-examples --type files
+./cde resource upload --name spark-examples --local-path spark-examples_2.11-2.4.8.7.1.9.1045-5.jar
+
+
+Verify:
+
+./cde resource describe --name spark-examples
+
+✅ Step 6 — Create Spark Pi job
+
+Run:
+
+./cde job create \
+  --name spark-pi-test \
+  --type spark \
+  --mount-1-resource spark-examples \
+  --jar spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --class org.apache.spark.examples.SparkPi \
+  --arg 10 \
+  --driver-cores 1 \
+  --driver-memory 1g \
+  --executor-cores 1 \
+  --executor-memory 1g \
+  --num-executors 2
+
+
+If you re-run and it already exists, update instead:
+
+./cde job update --name spark-pi-test \
+  --jar spark-examples_2.11-2.4.8.7.1.9.1045-5.jar \
+  --class org.apache.spark.examples.SparkPi \
+  --arg 10
+
+✅ Step 7 — Submit the job and wait for completion
+./cde job run --name spark-pi-test --wait
+
+
+You should see output similar to:
+
+Job run submitted: <run-id>
+Job run status: running
+Job run completed successfully
+
+✅ Step 8 — Check logs and job details
+./cde run logs --name spark-pi-test
+# or by run ID:
+./cde run describe --id <run-id>
+
+
+You should see a line such as:
+
+Pi is roughly 3.14xxxx
+
+✅ Step 9 — (Alternative) Submit directly via API curl call
+
+If you want to confirm your TLS-auth works directly:
+
+curl -X POST \
+  "https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi-test/run" \
+  --cert /root/certs-11-03-2025/cde-k4sg67rt.pem \
+  --key /root/certs-11-03-2025/cde-k4sg67rt.key \
+  -H "Content-Type: application/json"
+
+
+This returns a JSON payload with runId.
