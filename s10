@@ -261,6 +261,48 @@ Job completed successfully
 
 .........
 
+Fixed Working Command Set
+Step 1 — Set these environment variables
+export VC_BASE="https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net"
+export TOKEN=$(cat ~/.cache/cloudera/cde/token-cache | jq -r '.[].access_token')
+export JOB_NAME="spark-pi"
+
+Step 2 — List recent job runs
+curl -sk -H "Authorization: Bearer $TOKEN" \
+"$VC_BASE/gateway/cdp-proxy-api/cde/api/v1/jobs/$JOB_NAME/runs?limit=5" | jq .
+
+
+This should finally return JSON with a list of runs and their IDs.
+
+Step 3 — Pick latest run ID
+
+For example:
+
+RUN_ID=$(curl -sk -H "Authorization: Bearer $TOKEN" \
+"$VC_BASE/gateway/cdp-proxy-api/cde/api/v1/jobs/$JOB_NAME/runs?limit=1" | jq -r '.runs[0].id')
+echo $RUN_ID
+
+Step 4 — Show driver log for that run
+curl -sk -H "Authorization: Bearer $TOKEN" \
+"$VC_BASE/gateway/cdp-proxy-api/cde/api/v1/jobs/$JOB_NAME/runs/$RUN_ID/logs" | jq -r '.driverLog'
+
+✅ Expected output
+Starting job SparkPi...
+Pi is roughly 3.141592653589793
+Job completed successfully.
+
+🧩 If it still 404s
+
+Run just this to discover the correct root:
+
+curl -sk -H "Authorization: Bearer $TOKEN" "$VC_BASE/gateway/cdp-proxy-api/cde/api/v1/jobs" | head
+
+
+If that works, you’re good.
+If not, try the variant some CDE versions use:
+
+"$VC_BASE/gateway/default/cde/api/v1/jobs"
+
 curl -sk -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache | jq -r '.[].access_token')" \
 "https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs"
 
