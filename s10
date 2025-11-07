@@ -113,3 +113,25 @@ If you just want to see available jobs again:
   --tls-insecure \
   --last-run
 
+
+
+===
+
+./cde job run \
+  --name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure \
+  --wait \
+  --verbose
+
+
+curl -k -X GET \
+  -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache)" \
+  "https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs/42/logs" | jq -r '.driverLog'
+
+
+curl -k -X GET \
+  -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache)" \
+  "https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs" | jq .
+
