@@ -1,0 +1,41 @@
+Step 1: Get the latest run ID
+./cde job runs list \
+  --name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+Copy the most recent "id" value from that output (it’ll look like 01HHV6X2K4ZB5V8ZC8G7SQQY1E).
+
+🔹 Step 2: Describe that specific run (to see status + logs info)
+./cde job runs describe \
+  --name spark-pi \
+  --run-id 01HHV6X2K4ZB5V8ZC8G7SQQY1E \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+🔹 Step 3: See driver log output (Pi value) directly in terminal
+./cde job runs logs \
+  --name spark-pi \
+  --run-id 01HHV6X2K4ZB5V8ZC8G7SQQY1E \
+  --type driver \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+💡 Shortcut: Get logs for the latest run automatically
+RUN_ID=$(./cde job runs list \
+  --name spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure | jq -r '.runs[0].id')
+
+./cde job runs logs \
+  --name spark-pi \
+  --run-id "$RUN_ID" \
+  --type driver \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
