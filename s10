@@ -217,3 +217,44 @@ curl -sk -H "Authorization: Bearer $(cat /tmp/cde_token.txt)" \
 
 Output should show:
 
+=============
+
+Final, Working Commands (Simplest Possible)
+Step 1 — Set your variables
+VC_URL="https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1"
+TOKEN=$(cat ~/.cache/cloudera/cde/token-cache | jq -r '.[].access_token')
+JOB="spark-pi"
+
+Step 2 — Find the latest run ID
+curl -sk -H "Authorization: Bearer $TOKEN" "$VC_URL/jobs/$JOB/runs?limit=1" | jq -r '.runs[0].id'
+
+
+That will print something like:
+
+42
+
+Step 3 — Show full driver log for that run
+RUN_ID=42
+curl -sk -H "Authorization: Bearer $TOKEN" "$VC_URL/jobs/$JOB/runs/$RUN_ID/logs" | jq -r '.driverLog'
+
+
+💡 Tip:
+If you just want to see everything without formatting or parsing errors:
+
+curl -sk -H "Authorization: Bearer $TOKEN" "$VC_URL/jobs/$JOB/runs/$RUN_ID/logs"
+
+
+That prints full JSON (you can scroll and find your “Pi is roughly …” output).
+
+Optional (Compact One-Liner):
+
+If you just want one simple line to run and see everything:
+
+TOKEN=$(cat ~/.cache/cloudera/cde/token-cache | jq -r '.[].access_token'); curl -sk -H "Authorization: Bearer $TOKEN" "https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs/42/logs" | jq -r '.driverLog'
+
+✅ Expected Output Example:
+Starting job SparkPi...
+...
+Pi is roughly 3.141592653589793
+Job completed successfully
+
