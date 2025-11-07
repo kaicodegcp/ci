@@ -181,5 +181,39 @@ curl -sk -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache)" \
 "https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs/42/logs" | jq -r '.driverLog' | grep "Pi"
 
 
+
+1️⃣ Extract the real access token properly
+
+Run this:
+
+cat ~/.cache/cloudera/cde/token-cache | jq -r '.[].access_token' > /tmp/cde_token.txt
+
+
+Verify it:
+
+cat /tmp/cde_token.txt
+
+
+✅ It should print a single very long line, starting with:
+
+eyJq...
+
+🧩 2️⃣ Then re-run the curl commands using this clean token
+
+To get latest run ID:
+
+curl -sk -H "Authorization: Bearer $(cat /tmp/cde_token.txt)" \
+"https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs" \
+| jq -r '.[0].id'
+
+
+To get driver logs for that run (example run 42):
+
+curl -sk -H "Authorization: Bearer $(cat /tmp/cde_token.txt)" \
+"https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs/42/logs" \
+| jq -r '.driverLog' | grep "Pi"
+
+
+
 Output should show:
 
