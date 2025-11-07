@@ -39,3 +39,23 @@ RUN_ID=$(./cde job runs list \
   --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
   --credentials-file /root/.cdp/credentials \
   --tls-insecure
+
+
+=====
+
+Fixed full working command sequence
+Step 1: Get the latest run ID
+RUN_ID=$(./cde job runs list \
+  --job spark-pi \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure | jq -r '.runs[0].id')
+
+Step 2: Display Pi driver logs
+./cde job runs logs \
+  --job spark-pi \
+  --run-id "$RUN_ID" \
+  --type driver \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
