@@ -59,3 +59,25 @@ Step 2: Display Pi driver logs
   --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
   --credentials-file /root/.cdp/credentials \
   --tls-insecure
+
+
+
+
+======
+
+./cde job runs logs \
+  --job spark-pi \
+  --run-id 44 \
+  --type driver \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
+
+./cde job runs describe \
+  --job spark-pi \
+  --run-id 44 \
+  --vcluster-endpoint https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1 \
+  --credentials-file /root/.cdp/credentials \
+  --tls-insecure
+
