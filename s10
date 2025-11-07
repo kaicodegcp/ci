@@ -135,3 +135,11 @@ curl -k -X GET \
   -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache)" \
   "https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs" | jq .
 
+
+RUN_ID=$(curl -sk -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache)" \
+"https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs" | jq -r '.[0].id')
+
+curl -sk -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache)" \
+"https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs/${RUN_ID}/logs" | jq -r '.driverLog'
+
+
