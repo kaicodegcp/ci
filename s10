@@ -258,3 +258,9 @@ Starting job SparkPi...
 Pi is roughly 3.141592653589793
 Job completed successfully
 
+
+.........
+
+curl -sk -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache | jq -r '.[].access_token')" \
+"https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs"
+
