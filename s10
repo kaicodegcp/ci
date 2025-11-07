@@ -160,3 +160,26 @@ curl -sk -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache)" \
   --tls-insecure
 cat ~/.cache/cloudera/cde/token-cache
 
+====
+Step 3. Get latest run ID
+
+Run this:
+
+curl -sk -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache)" \
+"https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs" | jq -r '.[0].id'
+
+
+You should see:
+
+42
+
+Step 4. Fetch and display driver logs
+
+Now fetch logs of that run:
+
+curl -sk -H "Authorization: Bearer $(cat ~/.cache/cloudera/cde/token-cache)" \
+"https://4n9wpd5l.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net/dex/api/v1/jobs/spark-pi/runs/42/logs" | jq -r '.driverLog' | grep "Pi"
+
+
+Output should show:
+
