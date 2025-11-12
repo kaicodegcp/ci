@@ -1,0 +1,45 @@
+#!/bin/bash
+
+JENKINS_USER=gm63862
+JENKINS_TOKEN='winterinindia@2026'
+
+# Jenkins job URL
+JENKINS_URL="https://ebjenkins13.nam.nsroot.net/job/CTI/job/174063/job/image-ingestion/job/image-ingestion/buildWithParameters"
+
+# File containing all image names (36 lines)
+IMAGE_LIST="images.txt"
+
+# Check if file exists
+if [[ ! -f "$IMAGE_LIST" ]]; then
+  echo "Image list file $IMAGE_LIST not found!"
+  exit 1
+fi
+
+# Loop through each image (avoid infinite re-read)
+while IFS= read -r IMAGE_NAME || [[ -n "$IMAGE_NAME" ]]; do
+  # Skip empty or commented lines
+  [[ -z "$IMAGE_NAME" || "$IMAGE_NAME" =~ ^# ]] && continue
+
+  echo "Triggering Jenkins job for $IMAGE_NAME"
+
+  curl -X POST \
+    -u "${JENKINS_USER}:${JENKINS_TOKEN}" \
+    "$JENKINS_URL" \
+    --data-urlencode "NAME=${IMAGE_NAME}" \
+    --data-urlencode "TAG_REGEX_PATTERN=" \
+    --data-urlencode "SKIP_AUTO_IMPORT=true" \
+    --data-urlencode "TAG_AUTO_IMPORT_FREQUENCY=7" \
+    --data-urlencode "PRIVATE_REPO_CREDS_ID=165345-ClouderaDocker" \
+    --data-urlencode "DESCRIPTION=Cloudera1.5.4-h15" \
+    --data-urlencode "DISTRIUTION=cds-ds-hxv" \
+    --data-urlencode "CTC_PRODUCT_ID=39501" \
+    --data-urlencode "ISRP_ID=" \
+    --data-urlencode "OWNER_SOEID=sk60554" \
+    --data-urlencode "DELEGATE_SOEID=sb92490" \
+    --data-urlencode "OWNER_EMAIL=sk60554@citi.com"
+
+  echo "Job triggered for $IMAGE_NAME, sleeping for 90 seconds..."
+  sleep 90
+done < "$IMAGE_LIST"
+
+echo "All jobs submitted successfully!"
