@@ -1,0 +1,211 @@
+---
+lvm_vg: datavg
+
+lvm_pvs:
+  - /dev/sdb
+  - /dev/sdc
+  - /dev/sdd
+  - /dev/sde
+  - /dev/sdf
+  - /dev/sdg
+  - /dev/sdh
+  - /dev/sdi
+  - /dev/sdj
+  - /dev/sdk
+  - /dev/sdl
+  - /dev/sdm
+  - /dev/sdn
+  - /dev/sdo
+  - /dev/sdp
+  - /dev/sdq
+  - /dev/sdr
+  - /dev/sds
+  - /dev/sdt
+  - /dev/sdu
+  - /dev/sdv
+  - /dev/sdw
+  - /dev/sdx
+  - /dev/sdy
+  - /dev/sdz
+  - /dev/sdaa
+  - /dev/sdab
+  - /dev/sdac
+  - /dev/sdad
+  - /dev/sdae
+  - /dev/sdaf
+  - /dev/sdag
+  - /dev/sdah
+  - /dev/sdai
+  - /dev/sdaj
+  - /dev/sdak
+  - /dev/sdal
+  - /dev/sdam
+  - /dev/sdan
+  - /dev/sdao
+  - /dev/sdap
+  - /dev/sdaq
+  - /dev/sdar
+  - /dev/sdas
+  - /dev/sdat
+  - /dev/sdau
+  - /dev/sdav
+  - /dev/sdaw
+  - /dev/sdax
+  - /dev/sday
+  - /dev/sdaz
+
+lvm_fs: ext4
+
+lvm_layout:
+  - name: data_1
+    mount: /data/1/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_2
+    mount: /data/2/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_3
+    mount: /data/3/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_4
+    mount: /data/4/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_5
+    mount: /data/5/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_6
+    mount: /data/6/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_7
+    mount: /data/7/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_8
+    mount: /data/8/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_9
+    mount: /data/9/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_10
+    mount: /data/10/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_11
+    mount: /data/11/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_12
+    mount: /data/12/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_13
+    mount: /data/13/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_14
+    mount: /data/14/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_15
+    mount: /data/15/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_16
+    mount: /data/16/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_17
+    mount: /data/17/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_18
+    mount: /data/18/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_19
+    mount: /data/19/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_20
+    mount: /data/20/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_21
+    mount: /data/21/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_22
+    mount: /data/22/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_23
+    mount: /data/23/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_24
+    mount: /data/24/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_25
+    mount: /data/25/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_26
+    mount: /data/26/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_27
+    mount: /data/27/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_28
+    mount: /data/28/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_29
+    mount: /data/29/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_30
+    mount: /data/30/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_31
+    mount: /data/31/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_32
+    mount: /data/32/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_33
+    mount: /data/33/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_34
+    mount: /data/34/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_35
+    mount: /data/35/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_36
+    mount: /data/36/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_37
+    mount: /data/37/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_38
+    mount: /data/38/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_39
+    mount: /data/39/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_40
+    mount: /data/40/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_41
+    mount: /data/41/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_42
+    mount: /data/42/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_43
+    mount: /data/43/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_44
+    mount: /data/44/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_45
+    mount: /data/45/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_46
+    mount: /data/46/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_47
+    mount: /data/47/hadoop-ozone/datanode/data
+    size: 3000
+  - name: data_48
+    mount: /data/48/hadoop-ozone/datanode/data
+    size: 3000
+
+email_to: "{{ user_id }}@citi.com"
+email_subject: Ozone DN datavg build
+use_mail_module: false
+smtp_host: localhost
+smtp_port: 25
+smtp_from: "unixwave@{{ ansible_fqdn | default(inventory_hostname) }}"
+use_mount_module: true
