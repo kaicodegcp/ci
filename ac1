@@ -1,3 +1,41 @@
+CDE CLI Enablement on Cloud VM and Spark Job API Execution
+
+The EAP Strategic Solutions team successfully configured a Cloud VM to securely run Cloudera Data Engineering (CDE) CLI tools and validated Spark job submissions via API calls. This completed the last remaining requirement to support certified and automated Spark job executions for Cloudera Data Services (CDS) environments on OpenShift.
+
+The setup involved identifying missing trust anchors, ensuring TLS certificate trust alignment, deploying CDE CLI binaries, and performing end-to-end job validation using a sample SparkPi job from EAP hosts.
+
+Key Achievements:
+
+Resolved TLS chain issues by correctly installing and validating required root and intermediate certs in /etc/pki/ca-trust/source/anchors/.
+
+Configured cloud VM (sd-wv58-kflz) with CDE CLI tooling and validated connectivity with Cloudera API endpoints.
+
+Successfully submitted a SparkPi job using the CDE CLI from the cloud VM and confirmed job completion and log cleanup.
+
+Enabled CLI-based Spark job workflows, bypassing the need for console UI-based interactions.
+
+Collected logs and screenshots to validate job stages, executor pod allocation, and Spark context teardown.
+
+Benefits to the Team:
+
+Establishes a reusable CLI-enabled VM template for future EAP Spark job testing and automation.
+
+Unlocks secured API-based submission pathways from outside OpenShift (via whitelisted trusted cloud VMs).
+
+Reduces manual setup by codifying cert deployment and CDE CLI configuration.
+
+Allows for more flexible and programmatic job automation aligned with enterprise CI/CD pipelines.
+
+Next Steps:
+
+Finalize documentation and commit CLI install and cert deployment instructions to internal wiki.
+
+Extend CLI testing to cover more job types (Hive-on-Spark, Streaming workloads, etc.).
+
+Integrate CDE CLI usage into Jenkins or internal job submission tooling for broader automation.
+
+Coordinate with security team to audit cert trust chains and rotate where needed.
+
 
 CDE CLI Enablement on Cloud VM and Spark Job API Execution
 
