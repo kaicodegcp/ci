@@ -1,0 +1,36 @@
+
+CDE CLI Enablement on Cloud VM and Spark Job API Execution
+
+
+Streamlining API-based Workflows for Cloudera Data Services on OpenShift:
+The EAP Strategic Solutions team enabled Spark job submission from a cloud-hosted VM by configuring the Cloudera Data Engineering (CDE) CLI. This effort was key in decoupling development environments from physical infrastructure and validating that cloud-based tools could securely interact with CDS environments hosted on OpenShift clusters.
+
+This milestone was a crucial part of the certification workflow for onboarding CDS components in isolated or container-based environments.
+
+Key Achievements
+
+Successfully configured the cloud VM (sd-wv58-kflz) with CDE CLI binaries and environmental dependencies.
+
+Installed required TLS root certificates and trusted anchor chain for secure API communication with OpenShift-hosted CDE endpoints.
+
+Validated the CLI environment by submitting a test SparkPi job using cde spark submit command via the CDE CLI and confirming completion through driver logs.
+
+Demonstrated seamless interaction between cloud-hosted tools and enterprise CDS environments — opening the path for remote automation and CI/CD integration.
+
+Benefits to the Team
+
+Establishes a validated pattern for running CDE CLI tools from lightweight cloud VMs without relying on on-prem resources.
+
+Supports container-native automation scenarios such as Jenkins-based job triggering or REST API orchestration.
+
+Reduces certification friction by allowing early CLI validation even before cluster-level automation is finalized.
+
+Enables consistent remote access for Spark job lifecycle management across dev/test environments.
+
+Next Steps
+
+Expand the validated pattern to additional cloud VMs and OpenShift namespaces.
+
+Integrate CLI-based submission into CDS Jenkins pipelines to automate job ingestion for EAP teams.
+
+Share this configuration guide with peer teams for broader adoption of CDE CLI automation models.
