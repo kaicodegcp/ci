@@ -1,0 +1,84 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <hostname>"
+  exit 1
+fi
+
+HOSTNAME=$1
+OUTDIR=/root/oct24-certs/${HOSTNAME}
+
+mkdir -p $OUTDIR
+
+cat > $OUTDIR/endEntity.ext <<EOF
+basicConstraints=CA:FALSE
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth, clientAuth
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = ${HOSTNAME}
+DNS.2 = *.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.3 = cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.4 = *.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.5 = apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+EOF
+
+if [ $? -eq 0 ]; then
+  echo "endEntity.ext created at $OUTDIR/endEntity.ext"
+else
+  echo "Error creating endEntity.ext"
+fi
+
+
+===
+
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <hostname>"
+  exit 1
+fi
+
+HOSTNAME=$1
+OUTDIR=/root/oct24-certs/${HOSTNAME}
+
+mkdir -p $OUTDIR
+
+openssl req -new -sha256 -newkey rsa:4096 -nodes \
+  -keyout $OUTDIR/${HOSTNAME}.key \
+  -out $OUTDIR/${HOSTNAME}.csr \
+  -config <(
+cat <<EOF
+[ req ]
+default_bits = 4096
+prompt = no
+default_md = sha256
+req_extensions = req_ext
+distinguished_name = dn
+
+[ dn ]
+C = US
+ST = FL
+L = TAMPA
+O = Citigroup Inc.
+OU = 165345
+CN = ${HOSTNAME}
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = ${HOSTNAME}
+DNS.2 = *.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.3 = cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.4 = *.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.5 = apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+EOF
+)
+
+if [ $? -eq 0 ]; then
+  echo "CSR + Key generated at $OUTDIR"
+else
+  echo "Error generating CSR"
+fi
