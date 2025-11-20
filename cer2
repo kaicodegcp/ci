@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 <hostname>"
+  exit 1
+fi
+
+HOSTNAME=$1
+
+mkdir -p /root/oct24-certs/${HOSTNAME}
+
+cat > /root/oct24-certs/${HOSTNAME}/endEntity.ext <<EOF
+basicConstraints=CA:FALSE
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth, clientAuth
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = ${HOSTNAME}
+DNS.2 = *.cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.3 = cde-k4sg67rt.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.4 = *.apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.5 = apps.mlab-ctigtdcai03d.ecs.dyn.nsroot.net
+DNS.6 = *.ecs.dyn.nsroot.net
+DNS.7 = ecs.dyn.nsroot.net
+EOF
+
+if [ $? -eq 0 ]; then
+  echo "Configuration file created at /root/oct24-certs/${HOSTNAME}/endEntity.ext"
+else
+  echo "Error creating configuration file."
+fi
