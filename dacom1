@@ -1,0 +1,46 @@
+Title
+
+Automated Disk Layout for Ozone DataNode Hosts via Starfleet Playbook
+
+Team
+
+EAP Big Data Engineering
+
+Submitted for Week Ending
+
+11/21/2025
+
+Description
+
+Infrastructure Automation and Standardization:
+This week, the EAP Big Data Engineering team enhanced the ozone_datanode.yml layout file to support fully automated filesystem provisioning for Cloudera Ozone DataNode hosts. The new changes were tested using the Citi Starfleet portal and executed successfully via the cti_rhel_eapbigdata_bdeng_vm_maintenance Ansible playbook with the datanode host type.
+
+This improvement eliminates manual intervention from the Unix SA team during DataNode provisioning and ensures consistent and compliant volume group creation across all future deployments.
+
+Key Achievements
+
+Added and validated the vars/ozone_datanode.yml configuration in Git branch nov20 for datavg layout.
+
+Enabled automated creation of logical volumes /data/1 through /data/10 for Ozone DataNodes.
+
+Successfully tested execution of the Starfleet Ansible job on VM sd-dmvp-yluj targeting the datanode role.
+
+Verified that filesystem provisioning completes without errors and supports Cloudera's deployment requirements.
+
+Benefits to the Team
+
+Eliminates dependency on Unix SA team for filesystem creation on DataNodes.
+
+Reduces provisioning time during Ozone cluster expansion or hardware refresh cycles.
+
+Ensures consistency and compliance across environments through version-controlled automation.
+
+Improves operational efficiency by integrating the process into Starfleet’s self-service Ansible portal.
+
+Next Steps
+
+Promote this update to UAT and PROD branches after DEV validation.
+
+Extend similar automation support for hybrid or mixed-disk layout DataNodes.
+
+Monitor adoption across cluster builds and capture logs for continuous improvement.
